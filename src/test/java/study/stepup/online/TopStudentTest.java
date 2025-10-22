@@ -26,11 +26,11 @@ public class TopStudentTest extends BaseTest{
     void setUp() {
         deleteAllStudents();
     }
-//
-//    @AfterEach
-//    void cleanUp() {
-//        deleteAllStudents();
-//    }
+
+    @AfterEach
+    void cleanUp() {
+        deleteAllStudents();
+    }
 
     @Test
     @DisplayName("9. get /topStudent код 200 и пустое тело, если студентов в базе нет.")
