@@ -26,11 +26,11 @@ public class TopStudentTest extends BaseTest{
     void setUp() {
         deleteAllStudents();
     }
-
-    @AfterEach
-    void cleanUp() {
-        deleteAllStudents();
-    }
+//
+//    @AfterEach
+//    void cleanUp() {
+//        deleteAllStudents();
+//    }
 
     @Test
     @DisplayName("9. get /topStudent код 200 и пустое тело, если студентов в базе нет.")
@@ -43,7 +43,8 @@ public class TopStudentTest extends BaseTest{
                 .get()
                 .then().log().all()
                 .statusCode(200)
-                .header("Content-Length", "0");
+                .header("Content-Length", "0")
+                .body(Matchers.emptyString());
     }
 
     @Test
@@ -60,7 +61,8 @@ public class TopStudentTest extends BaseTest{
                 .get()
                 .then().log().all()
                 .statusCode(200)
-                .header("Content-Length", "0");
+                .header("Content-Length", "0")
+                .body(Matchers.emptyString());
     }
 
     @Test
@@ -68,8 +70,9 @@ public class TopStudentTest extends BaseTest{
     void testTopStudent_MaxAvg_Success_Returns200andStudent() {
         firstStudent = new Student("5,5,5,5,5,5,5,5,5,5,5,5,4, средний 4,9231", List.of(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4));
         secondStudent = new Student("5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3, средняя 4,9167", List.of(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3));
-        therdStudent = new Student("Без оценок", List.of());
+        therdStudent = new Student("Без оценок", List.of(4));
         int idAvgStudent = createStudent(firstStudent);
+        System.out.println(idAvgStudent);
         createStudent(secondStudent);
         createStudent(therdStudent);
 
@@ -93,9 +96,11 @@ public class TopStudentTest extends BaseTest{
             firstStudent = new Student("5,5,5,5,5,5,5,5,5,5,5,4 средний 4,9167", List.of(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4));
             secondStudent = new Student("5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3, средняя 4,9167", List.of(5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3));
             therdStudent = new Student("Без оценок", List.of());
+            fourthStudent = new Student("2", List.of(2));
             createStudent(firstStudent);
             int idAvgStudent = createStudent(secondStudent);
             createStudent(therdStudent);
+            createStudent(fourthStudent);
 
             RestAssured.given()
                     .spec(clientSpec())
@@ -115,8 +120,8 @@ public class TopStudentTest extends BaseTest{
     @DisplayName("12 get /topStudent код 200 и несколько студентов, если у них всех эта оценка максимальная и при этом они равны по количеству оценок.")
     void testTopStudent_BothMaxAvg_Success_Returns200andBothStudent() {
         firstStudent = new Student("5,3", List.of(5, 3));
-        secondStudent = new Student("5,3", List.of(5, 3));
-        therdStudent = new Student("4", List.of(4));
+        secondStudent = new Student("3,5", List.of(3, 5));
+        therdStudent = new Student("3", List.of(3));
         fourthStudent = new Student("Без оценок", List.of());
         int firstIdAvgStudent = createStudent(firstStudent);
         int secondIdAvgStudent = createStudent(secondStudent);
